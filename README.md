@@ -36,9 +36,9 @@ python3 -m http.server 8080
 
 参考用于Brief结构与衡量思路，不代表平台背书。
 
-## 本地真实 AI（Node.js 20+）
+## 本地真实 AI（Node.js 22+）
 
-在启动服务的终端环境中配置 `ANTHROPIC_API_KEY`，可选 `ANTHROPIC_MODEL`，然后运行：
+在启动服务的终端环境中配置 `OPENAI_API_KEY`，可选 `OPENAI_MODEL`，然后运行：
 
 ```sh
 node server.mjs
@@ -46,6 +46,14 @@ node server.mjs
 
 打开 http://127.0.0.1:8089 。密钥仅从服务端环境读取，不写入网页。GitHub Pages 上的 `/api` 不存在，公开页明确使用固定演练模式，不伪装实时AI。
 
-点击真实生成会把当前输入发往 Anthropic。请使用虚构或已获授权且脱敏的内容。服务只绑定本地回环地址、限制同源JSON请求、6000字输入、单次60秒超时、最多2200输出token、串行调用及每次启动30次限额。输出和修订不自动存储，可主动导出。
+点击真实生成会把当前输入发往 OpenAI。请使用虚构或已获授权且脱敏的内容。服务只绑定本地回环地址、限制同源JSON请求、6000字输入、单次60秒超时、最多2200输出token、串行调用及每次启动30次限额。输出和修订不自动存储，可主动导出。
 
 这不是完整自主Agent：提供需求诊断、采访生成和草稿审阅，决策、内容审核及对外发送由人完成。真实模型是否可用取决于服务端账号、权限、额度与网络。
+
+### OpenAI 配置
+
+将 `.env.example` 复制为同目录 `.env`，仅在 `.env` 内填写 OPENAI_API_KEY。服务启动时读取该文件；`.env` 已被 gitignore 排除且不在静态文件白名单内。
+
+默认模型 `gpt-4.1-mini`，可通过 `OPENAI_MODEL` 修改为账号有权限调用的模型。使用官方 Responses API，`store:false`。ChatGPT 登录不会自动提供本项目API密钥。配置后重新运行 `node server.mjs`，打开 http://127.0.0.1:8089/#ai-lab 。
+
+官方接口文档：https://developers.openai.com/api/reference/resources/responses/methods/create
